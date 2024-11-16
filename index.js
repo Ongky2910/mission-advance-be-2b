@@ -1,16 +1,17 @@
 const express = require("express");
 const app = express();
 const userRoutes = require("./routes/userRoutes");
+const path = require("path");
+const uploadRoutes = require("./routes/uploadRoutes");
 
 // Middleware untuk parsing JSON
 app.use(express.json());
 const authRoutes = require("./routes/authRoutes");
 
-// routes multer
-const multerRoutes = require("./routes/multerRoutes");
+// routes "uploads"
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/api", uploadRoutes);
 
-app.use("/api", multerRoutes);
-// Menggunakan routes
 app.use("/api", userRoutes);
 app.use("/api/auth", authRoutes);
 

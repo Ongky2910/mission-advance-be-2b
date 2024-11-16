@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 const { sendVerificationEmail } = require("../services/emailService");
-const { jwtSecret, db } = require("../config");
+const { jwtSecret, db } = require("../config/config");
 const { validateRegistration, validateLogin } = require("../utils/validation");
 
 async function registerUser(req, res) {
@@ -15,9 +15,8 @@ async function registerUser(req, res) {
   const verificationToken = uuidv4();
 
   try {
-    const [result] = await db.query("INSERT INTO user (email, password, verification_token) VALUES (?, ?, ?)", [email, hashedPassword, verificationToken]);
+    const [result] = await db.query("INSERT INTO user ( email, password, verification_token) VALUES (?, ?, ?)", [email, hashedPassword, verificationToken]);
 
-    // Tambahkan try-catch untuk memastikan email ter-handle dengan baik
     try {
       await sendVerificationEmail(email, verificationToken);
       res.status(201).json({ message: "Registrasi berhasil, cek email Anda untuk verifikasi" });

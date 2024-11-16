@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { jwtSecret } = require("../config");
+const { jwtSecret } = require("../config/config");
 
 function authenticateToken(req, res, next) {
   // Ambil token dari header Authorization
@@ -19,7 +19,7 @@ function authenticateToken(req, res, next) {
 
     // Menyimpan data user dari token ke req.user untuk digunakan di endpoint berikutnya
     req.user = user;
-    next(); // Lanjutkan ke endpoint berikutnya
+    next();
   });
 }
 

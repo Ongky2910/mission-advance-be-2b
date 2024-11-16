@@ -1,4 +1,4 @@
-const { db } = require("../config");
+const { db } = require("../config/config");
 
 // Fungsi untuk mendapatkan semua user
 const getAllUsers = async () => {
