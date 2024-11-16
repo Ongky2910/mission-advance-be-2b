@@ -1,54 +1,53 @@
-// models/userModel.js
-const db = require("../connection/db");
+const { db } = require("../config");
 
-// Fungsi getallusers untuk mendapatkan semua user
-const getAllUsers = () => {
-  return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM user", (err, results) => {
-      if (err) return reject(err);
-      resolve(results);
-    });
-  });
+// Fungsi untuk mendapatkan semua user
+const getAllUsers = async () => {
+  try {
+    const [results] = await db.query("SELECT * FROM user");
+    return results;
+  } catch (err) {
+    throw err;
+  }
 };
 
-// Fungsi getoneuser untuk mendapatkan user berdasarkan ID
-getOneUser = (userID) => {
-  return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM user WHERE UserID = ?", [userID], (err, results) => {
-      if (err) return reject(err);
-      resolve(results);
-    });
-  });
+// Fungsi untuk mendapatkan user berdasarkan ID
+const getOneUser = async (userID) => {
+  try {
+    const [results] = await db.query("SELECT * FROM user WHERE UserID = ?", [userID]);
+    return results;
+  } catch (err) {
+    throw err;
+  }
 };
 
-// Fungsi CREATE untuk menambah user baru
-const createUser = (data) => {
-  return new Promise((resolve, reject) => {
-    db.query("INSERT INTO user SET ?", data, (err, results) => {
-      if (err) return reject(err);
-      resolve({ message: "User created successfully", results });
-    });
-  });
+// Fungsi untuk menambah user baru
+const createUser = async (data) => {
+  try {
+    const [results] = await db.query("INSERT INTO user SET ?", data);
+    return { message: "User created successfully", results };
+  } catch (err) {
+    throw err;
+  }
 };
 
-// Fungsi UPDATE untuk mengubah data user berdasarkan ID
-const updateUser = (userID, data) => {
-  return new Promise((resolve, reject) => {
-    db.query("UPDATE user SET ? WHERE UserID = ?", [data, userID], (err, results) => {
-      if (err) return reject(err);
-      resolve({ message: "User updated successfully", results });
-    });
-  });
+// Fungsi untuk mengubah data user berdasarkan ID
+const updateUser = async (userID, data) => {
+  try {
+    const [results] = await db.query("UPDATE user SET ? WHERE UserID = ?", [data, userID]);
+    return { message: "User updated successfully", results };
+  } catch (err) {
+    throw err;
+  }
 };
 
-// Fungsi DELETE untuk menghapus user berdasarkan ID
-const deleteUser = (userID) => {
-  return new Promise((resolve, reject) => {
-    db.query("DELETE FROM user WHERE UserID = ?", [userID], (err, results) => {
-      if (err) return reject(err);
-      resolve({ message: "User deleted successfully", results });
-    });
-  });
+// Fungsi untuk menghapus user berdasarkan ID
+const deleteUser = async (userID) => {
+  try {
+    const [results] = await db.query("DELETE FROM user WHERE UserID = ?", [userID]);
+    return { message: "User deleted successfully", results };
+  } catch (err) {
+    throw err;
+  }
 };
 
 module.exports = { getAllUsers, getOneUser, createUser, updateUser, deleteUser };
