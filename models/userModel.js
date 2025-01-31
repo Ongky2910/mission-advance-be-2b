@@ -23,7 +23,7 @@ const getOneUser = async (userID) => {
 // Fungsi untuk menambah user baru
 const createUser = async (data) => {
   try {
-    const [results] = await db.query("INSERT INTO user SET ?", data);
+    const [results] = await db.query("INSERT INTO user SET ?", { ...data, isVerified: false });
     return { message: "User created successfully", results };
   } catch (err) {
     throw err;

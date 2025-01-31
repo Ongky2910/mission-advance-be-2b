@@ -1,28 +1,30 @@
 const nodemailer = require("nodemailer");
-const { emailUser, emailPass } = require("../config/config");
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: emailUser,
-    pass: emailPass,
-  },
-});
+const sendVerificationEmail = async (email, token) => {
+  // Buat transporter untuk nodemailer
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER, // Ganti dengan email pengirim
+      pass: process.env.EMAIL_PASS, // Ganti dengan password pengirim
+    },
+  });
 
-async function sendVerificationEmail(email, token) {
+  // Kirim email verifikasi
   const mailOptions = {
-    from: emailUser,
+    from: `"My App" <${process.env.EMAIL_USER}>`, 
     to: email,
-    subject: "Verifikasi Akun",
-    text: `Klik tautan ini untuk verifikasi akun Anda: http://localhost:3000/api/auth/verify-email?token=${token}`,
+    subject: "Verifikasi Email Anda",
+    text: `Klik link berikut untuk memverifikasi email Anda: http://localhost:3001/api/auth/verify?token=${token}`,
   };
 
   try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Email berhasil dikirim:", info.response);
+    await transporter.sendMail(mailOptions);
+    console.log("Email verifikasi berhasil dikirim ke:", email);
   } catch (error) {
-    console.error("Error pengiriman email:", error);
+    console.error("Gagal mengirim email verifikasi:", error);
+    throw new Error("Gagal mengirim email verifikasi");
   }
-}
+};
 
 module.exports = { sendVerificationEmail };

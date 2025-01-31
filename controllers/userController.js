@@ -2,10 +2,13 @@ const { getAllUsers, getOneUser, createUser, updateUser, deleteUser } = require(
 
 // Controller untuk mendapatkan semua user
 const getAllUsersController = async (req, res) => {
+  console.log("Masuk ke getAllUsersController");
   try {
     const users = await getAllUsers();
+    console.log("Data pengguna:", users); 
     res.status(200).json(users);
   } catch (err) {
+    console.error("Error saat mendapatkan pengguna:", err);
     res.status(500).json({ error: err.message });
   }
 };
@@ -51,6 +54,7 @@ const deleteUserController = async (req, res) => {
   }
 };
 
+console.log("Exporting user controller functions...");
 module.exports = {
   getAllUsersController,
   getOneUserController,
